@@ -1,0 +1,47 @@
+# Disposable / throwaway email domains.
+# Seeded from observed Lutris spam plus well-known disposable providers.
+# One domain per line, lowercase. Comments start with '#'.
+
+# --- observed in Lutris submission spam ---
+grr.la
+guerrillamail.com
+guerrillamail.net
+guerrillamail.org
+guerrillamail.biz
+sharklasers.com
+hidingmail.net
+hidingmail.com
+protectsmail.net
+dralias.com
+mozmail.com
+
+# --- well-known disposable / relay providers ---
+mailinator.com
+10minutemail.com
+tempmail.com
+temp-mail.org
+tempmailo.com
+trashmail.com
+throwawaymail.com
+getnada.com
+maildrop.cc
+dispostable.com
+yopmail.com
+yopmail.fr
+fakeinbox.com
+mailnesia.com
+mytemp.email
+emailondeck.com
+mohmal.com
+tempr.email
+spam4.me
+mailcatch.com
+tmail.ws
+mail-temp.com
+inboxkitten.com
+33mail.com
+duck.com
+anonaddy.me
+anonaddy.com
+simplelogin.com
+relay.firefox.com
