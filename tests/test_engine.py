@@ -1,6 +1,6 @@
 """Tests for the scoring engine, using synthetic cases patterned on real spam."""
 
-from lutris_antispam import MAX_CONFIDENCE, Verdict, assess
+from lutris_antispam import MAX_CONFIDENCE, Verdict, assess, is_shared_host
 
 
 def test_disposable_domain_plus_keyword_is_spam_and_taunt_eligible():
@@ -231,3 +231,12 @@ def test_unseen_domain_does_not_fire_the_history_rule():
     )
     assert "history.known_spam_domain" not in result.matched_rules
     assert result.verdict is Verdict.CLEAN
+
+
+def test_shared_hosts_are_recognised():
+    assert is_shared_host("itch.io")
+    assert is_shared_host("somedev.itch.io")
+    assert is_shared_host("www.github.com")
+    assert not is_shared_host("notitch.io")
+    assert not is_shared_host("prestigesparkstreet.com")
+    assert not is_shared_host("")

@@ -34,6 +34,38 @@ def disposable_domains() -> frozenset[str]:
     return frozenset(domains)
 
 
+@lru_cache(maxsize=1)
+def shared_hosting_domains() -> frozenset[str]:
+    """Load the bundled list of hosts anyone can publish a page on."""
+    text = (
+        resources.files("lutris_antispam.data")
+        .joinpath("shared_hosting_domains.txt")
+        .read_text(encoding="utf-8")
+    )
+    domains = set()
+    for raw in text.splitlines():
+        line = raw.strip().lower()
+        if line and not line.startswith("#"):
+            domains.add(line)
+    return frozenset(domains)
+
+
+def is_shared_host(domain: str) -> bool:
+    """Whether a domain is a host anyone can publish a page on.
+
+    The website calls this before recording a domain as spam, so that banning a
+    spammer who used a shared host cannot taint everyone else hosted there.
+    """
+    domain = (domain or "").strip().lower().removeprefix("www.")
+    if not domain:
+        return False
+    hosts = shared_hosting_domains()
+    if domain in hosts:
+        return True
+    # Catches user.itch.io without matching notitch.io
+    return any(domain.endswith("." + host) for host in hosts)
+
+
 def email_parts(address: str) -> tuple[str, str]:
     """Return ``(localpart, domain)`` lowercased, or ``("", "")`` if invalid."""
     address = (address or "").strip().lower()

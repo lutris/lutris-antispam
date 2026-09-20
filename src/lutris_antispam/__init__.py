@@ -1,4 +1,4 @@
-"""lutris-antispam — closed-source submission scoring for the Lutris website.
+"""lutris-antispam — submission scoring for the Lutris website.
 
 Public API::
 
@@ -8,8 +8,8 @@ Public API::
     result.score    # 90
     result.as_dict()
 
-The website depends on this package but never sees the rules; only the verdict,
-a 0-100 score, and the list of matched rule names cross the boundary.
+The website receives a verdict, a 0-100 score and the names of the rules that
+matched, and does not reach into the rules themselves.
 """
 
 from lutris_antispam.engine import (
@@ -18,6 +18,7 @@ from lutris_antispam.engine import (
     UNCERTAIN_THRESHOLD,
     assess,
 )
+from lutris_antispam._util import is_shared_host
 from lutris_antispam.models import Assessment, RuleHit, Submission, Verdict
 
 __all__ = [
@@ -29,6 +30,7 @@ __all__ = [
     "MAX_CONFIDENCE",
     "SPAM_THRESHOLD",
     "UNCERTAIN_THRESHOLD",
+    "is_shared_host",
 ]
 
 __version__ = "0.2.0"
