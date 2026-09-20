@@ -89,6 +89,13 @@ moderator had accepted.
   language in description/reason.
 - `rules/account.py` — unconfirmed account with a profile website (mirrors the
   website's existing `clear_spammers` signal), brand-new account, empty library.
+- `rules/history.py` — the submission's website is a domain the website has
+  already banned a submission over (`website_seen_in_spam`). The one signal
+  based on a moderator's past decision rather than the shape of the text, so it
+  is trusted enough to reach the ban path — but deliberately weighted just under
+  the threshold, so it still needs corroboration. The website records those
+  domains only from confirmed bans, never from this package's own verdicts, and
+  never records shared hosts like itch.io.
 
 ## Development
 

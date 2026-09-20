@@ -30,6 +30,7 @@ STRONG_SIGNALS = frozenset(
         "email.localpart_matches_name",
         "account.unconfirmed_with_website",
         "identity.throwaway_promoting_name",
+        "history.known_spam_domain",
         "identity.backlink_on_retro_platform",
     }
 )

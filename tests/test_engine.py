@@ -202,3 +202,32 @@ def test_as_dict_shape():
     payload = assess({"name": "test free", "user_email": "x@grr.la"}).as_dict()
     assert set(payload) == {"verdict", "score", "matched_rules"}
     assert isinstance(payload["matched_rules"], list)
+
+
+def test_known_spam_domain_reaches_the_ban_path():
+    # The website has already banned a submission pushing this domain, which is
+    # a moderator's decision rather than a guess about the text.
+    result = assess(
+        {
+            "name": "Some Puzzle Adventure",
+            "user_email": "player@gmail.com",
+            "website": "https://slope-rider.io",
+            "website_seen_in_spam": True,
+            "account_age_days": 0.1,
+            "library_game_count": 0,
+        }
+    )
+    assert result.verdict is Verdict.SPAM
+    assert "history.known_spam_domain" in result.matched_rules
+
+
+def test_unseen_domain_does_not_fire_the_history_rule():
+    result = assess(
+        {
+            "name": "Some Puzzle Adventure",
+            "user_email": "player@gmail.com",
+            "website": "https://some-puzzle-game.example",
+        }
+    )
+    assert "history.known_spam_domain" not in result.matched_rules
+    assert result.verdict is Verdict.CLEAN

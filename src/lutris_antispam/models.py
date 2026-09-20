@@ -39,6 +39,9 @@ class Submission:
     account_age_days: float | None = None
     library_game_count: int | None = None
     platforms: tuple[str, ...] = ()
+    # Set by the website when this submission's website is a domain it has
+    # already banned a submission over.
+    website_seen_in_spam: bool = False
 
     @classmethod
     def from_dict(cls, data: dict) -> "Submission":
@@ -58,6 +61,7 @@ class Submission:
                 known[text_field] = ""
         if known.get("email_confirmed") is None:
             known["email_confirmed"] = True
+        known["website_seen_in_spam"] = bool(known.get("website_seen_in_spam"))
         known["platforms"] = tuple(known.get("platforms") or ())
         return cls(**known)
 

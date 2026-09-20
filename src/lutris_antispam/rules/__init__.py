@@ -5,7 +5,7 @@ accumulating the hits. Keeping each rule a small generator makes them easy to
 unit-test and reorder without touching the engine.
 """
 
-from lutris_antispam.rules import account, content, email, name, platform
+from lutris_antispam.rules import account, content, email, history, name, platform
 
 # Order is cosmetic (it only affects the order hits are reported in).
 ALL_CHECKS = (
@@ -14,4 +14,5 @@ ALL_CHECKS = (
     content.check,
     account.check,
     platform.check,
+    history.check,
 )
