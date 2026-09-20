@@ -1,0 +1,41 @@
+# Hosts where anyone can publish a page.
+#
+# A domain on this list is never recorded as a spam domain: banning one spammer
+# who happened to use itch.io must not mark every itch.io game as spam. Matching
+# covers subdomains too, so "someone.itch.io" is a shared host.
+#
+# One domain per line, lowercase. Comments start with '#'.
+
+# --- game hosting and distribution ---
+itch.io
+gamejolt.com
+indiedb.com
+moddb.com
+steampowered.com
+store.steampowered.com
+
+# --- code hosting ---
+github.com
+github.io
+gitlab.com
+sourceforge.net
+
+# --- site builders and blogs ---
+blogspot.com
+wordpress.com
+wixsite.com
+weebly.com
+tumblr.com
+neocities.org
+netlify.app
+vercel.app
+pages.dev
+
+# --- general platforms ---
+facebook.com
+youtube.com
+discord.gg
+google.com
+sites.google.com
+drive.google.com
+archive.org

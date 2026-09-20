@@ -19,7 +19,7 @@ def check(sub: Submission) -> Iterator[RuleHit]:
         yield RuleHit("account.unconfirmed_with_website", 40, sub.profile_website[:80])
 
     if sub.account_age_days is not None and sub.account_age_days < 1:
-        yield RuleHit("account.brand_new", 15, f"{sub.account_age_days:.2f}d")
+        yield RuleHit("account.brand_new", 10, f"{sub.account_age_days:.2f}d")
 
     if sub.library_game_count == 0:
-        yield RuleHit("account.empty_library", 10)
+        yield RuleHit("account.empty_library", 5)

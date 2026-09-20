@@ -67,6 +67,19 @@ def _name_matches_username(name: str, username: str) -> bool:
     return prefix >= 6 and prefix >= min(len(name_token), len(user_token)) // 2
 
 
+def _name_matches_site(low_name: str, profile_website: str) -> bool:
+    """True when the submitted name is what the profile website is named after."""
+    if not profile_website:
+        return False
+    host = re.sub(r"^\w+://", "", profile_website.strip().lower()).split("/")[0]
+    host = host.removeprefix("www.")
+    host_token = re.sub(r"[^a-z0-9]", "", host.split(".")[0])
+    name_token = re.sub(r"[^a-z0-9]", "", low_name)
+    if len(name_token) < 5 or len(host_token) < 5:
+        return False
+    return name_token in host_token or host_token in name_token
+
+
 def check(sub: Submission) -> Iterator[RuleHit]:
     name = sub.name.strip()
     if not name:
@@ -76,7 +89,7 @@ def check(sub: Submission) -> Iterator[RuleHit]:
 
     strong = _STRONG_SUFFIX_RE.search(low) if not is_domain else None
     if strong:
-        yield RuleHit("name.ends_free_or_game", 45, strong.group(1))
+        yield RuleHit("name.ends_free_or_game", 35, strong.group(1))
 
     words = set(re.findall(r"[a-z]+", low))
     if strong:
@@ -85,17 +98,23 @@ def check(sub: Submission) -> Iterator[RuleHit]:
     matched = sorted(words & _SPAM_KEYWORDS)
     if matched:
         # Cap so a keyword-stuffed name doesn't overflow on this rule alone.
-        yield RuleHit("name.spam_keyword", min(30, 20 * len(matched)), ",".join(matched))
+        yield RuleHit("name.spam_keyword", min(25, 20 * len(matched)), ",".join(matched))
 
     if is_domain:
         # The name is (or contains) a domain / URL — pure backlink bait. Skips the
         # suffix rules so a ".io"/".gg" TLD isn't scored twice: real games are named
         # that way (Agar.io) and must not be auto-banned on shape alone.
-        yield RuleHit("name.looks_like_domain", 40, name[:60])
+        yield RuleHit("name.looks_like_domain", 35, name[:60])
     elif not strong:
         suffix = _SUFFIX_RE.search(name)
         if suffix:
-            yield RuleHit("name.marketing_suffix", 25, suffix.group(0).strip())
+            yield RuleHit("name.marketing_suffix", 20, suffix.group(0).strip())
 
     if _name_matches_username(name, sub.username):
-        yield RuleHit("name.matches_username", 40, sub.username[:40])
+        yield RuleHit("name.matches_username", 45, sub.username[:40])
+
+    if _name_matches_site(low, sub.profile_website):
+        # Tempting as a spam signal, but on the real corpus every hit was an indie
+        # developer whose profile site *is* the game they submitted (Valyria Tear,
+        # Coreball). Kept only as a hint for the reviewer.
+        yield RuleHit("identity.name_matches_profile_site", 10, sub.profile_website[:80])

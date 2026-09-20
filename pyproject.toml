@@ -1,7 +1,7 @@
 [project]
 name = "lutris-antispam"
-version = "0.1.0"
-description = "Closed-source submission-scoring rules for the Lutris website"
+version = "0.2.0"
+description = "Submission-scoring rules for the Lutris website"
 requires-python = ">=3.10"
 dependencies = []
 
