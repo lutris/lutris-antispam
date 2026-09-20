@@ -1,11 +1,16 @@
 # lutris-antispam
 
-**Private / closed-source.** Deterministic submission-scoring rules for the
-Lutris website. This package is kept out of the public `lutris/website` repo on
-purpose: the rules must stay unreadable to the spammers who can read that repo.
+Deterministic submission-scoring rules for the Lutris website, kept in their own
+package so they can be tuned and tested on their own, without a Django or
+database dependency.
 
-The public website depends on this package but only ever sees a verdict, a
-0-100 score, and the list of matched rule *names* — never the rule logic.
+The website depends on this package and receives a verdict, a 0-100 score and
+the rules that matched. Keeping the rules readable is a deliberate trade: a
+spammer can read them, but so can every moderator and contributor who has to
+judge whether a verdict was fair. The rules are weighted against a measured
+corpus rather than kept secret, and the destructive path needs signals that are
+expensive for a spammer to avoid (a throwaway inbox, an account named after the
+thing it advertises) rather than ones that are cheap to reword.
 
 ## Contract
 
@@ -103,5 +108,7 @@ moderator had accepted.
 uv run --with pytest python -m pytest
 ```
 
-Rules are tuned against the live submission corpus; see the maintainer notes for
-the sampling procedure (do not commit real submission data — it contains PII).
+Rules are tuned against the live submission corpus — see "Tuning against the
+submission corpus" above for how that measurement is run. Never commit real
+submission data: it contains personal information. Keep fixtures synthetic, as
+in `tests/test_engine.py`.
