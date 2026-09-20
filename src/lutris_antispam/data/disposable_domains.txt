@@ -12,8 +12,6 @@ sharklasers.com
 hidingmail.net
 hidingmail.com
 protectsmail.net
-dralias.com
-mozmail.com
 
 # --- well-known disposable / relay providers ---
 mailinator.com
@@ -40,8 +38,3 @@ tmail.ws
 mail-temp.com
 inboxkitten.com
 33mail.com
-duck.com
-anonaddy.me
-anonaddy.com
-simplelogin.com
-relay.firefox.com
