@@ -8,20 +8,21 @@ from collections.abc import Iterator
 from lutris_antispam._util import DOMAIN_RE, URL_RE
 from lutris_antispam.models import RuleHit, Submission
 
-# Keywords that are strongly over-represented in SEO/backlink spam names.
-# Matched as whole words (case-insensitive).
+# Keywords over-represented in SEO/backlink spam names, matched as whole words
+# (case-insensitive).
+#
+# Piracy vocabulary was measured against the submission corpus and removed: it
+# describes what people legitimately submit here. "mod" appeared in 27
+# submissions of which 96% were accepted, "hack" in 5 and "crack" in 1, all
+# accepted — Doom mods and ROM hacks, not spam. Keywords are a weak signal in
+# general (18% spam-specific overall), which is why this rule is capped low and
+# can never reach the ban path on its own.
 _SPAM_KEYWORDS = frozenset(
     {
         "free",
         "online",
         "unblocked",
         "apk",
-        "mod",
-        "modded",
-        "crack",
-        "cracked",
-        "hack",
-        "hacked",
         "cheats",
         "download",
         "unlimited",
